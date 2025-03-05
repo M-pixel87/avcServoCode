@@ -23,17 +23,7 @@ camera = jetson.utils.videoSource("/dev/video0")
 def nothing(x):
     pass
 
-cv2.namedWindow('Trackbars', cv2.WINDOW_NORMAL)
-cv2.createTrackbar('hueLower', 'Trackbars', 0, 179, nothing)
-cv2.createTrackbar('hueUpper', 'Trackbars', 0, 179, nothing)
-cv2.createTrackbar('hue2Lower', 'Trackbars', 89, 179, nothing)
-cv2.createTrackbar('hue2Upper', 'Trackbars', 124, 179, nothing)
-cv2.createTrackbar('satLow', 'Trackbars', 146, 255, nothing)
-cv2.createTrackbar('satHigh', 'Trackbars', 255, 255, nothing)
-cv2.createTrackbar('valLow', 'Trackbars', 106, 255, nothing)
-cv2.createTrackbar('valHigh', 'Trackbars', 255, 255, nothing)
-cv2.namedWindow('detCam', cv2.WINDOW_NORMAL)
-cv2.namedWindow('FGmaskComp', cv2.WINDOW_NORMAL)
+
 
 display = jetson.utils.videoOutput()  # MEOW
 
@@ -47,6 +37,8 @@ yellowbucket_time = 0
 AvoidObstacle = 250
 Stop = 350
 
+zwii=2
+eins=1 
 
 while True:
     img = camera.Capture()
@@ -81,25 +73,16 @@ while True:
             # Handle object position and send to serial
             print(f"Object: {item}, Off center by: ({errorPan}), Width of: {w}")
 
-            if item == 'blue_bucket' and bluebucket_time == 1 : 
+            if item == 'blue_bucket' : 
                 # Alignment action
-                if abs(errorPan) > 50 and obsticalFLAG == 0:
-                    rounded_errorPan = math.ceil(errorPan / 15)
-                    SVal = rounded_errorPan + 150
-                    ser.write(f"{SVal}\n".encode())
+                if abs(errorPan) > 50 :
+                    if errorPan>0:
+                        ser.write(f"{zwii}\n".encode())
+                        SVal =2
+                    elif errorPan<0:
+                        ser.write(f"{eins}\n".encode())
+                        SVal =2
                     print(f"AI alignment action, Number sent: ({SVal})")
-
-                # Avoid obstacle action
-                if obsticalFLAG == 0 and w > 115:
-                    #ser.write(f"{AvoidObstacle}\n".encode())
-                    obsticalFLAG = 1
-                    print(f"Avoid obstacle, Number sent: ({AvoidObstacle})")
-
-
-            # Stop action
-            if obsticalsAvoided == 1:
-                ser.write(f"{Stop}\n".encode())
-                print(f"Stop, Number sent: ({Stop})")
 
             
 
