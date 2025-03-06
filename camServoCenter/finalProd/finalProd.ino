@@ -41,10 +41,7 @@ void loop() {
       positioncrnt--;
     }
     
-    Serial.print("Received number: ");
-    Serial.println(incomingDeg);
-    Serial.println(positioncrnt);
     panServo.write(positioncrnt);
     delay(10); 
   }
-
+}
