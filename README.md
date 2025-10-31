@@ -1,4 +1,4 @@
-# avcServoCode: Visual Servoing Demo for Jetson Orin
+# avcServoCode: Visual Servoing Demo for Jetson Orin 
 
 This project is a simple visual servoing demonstration for the NVIDIA Jetson Orin. It uses a camera to detect a target and a servo motor to automatically pan the camera to keep the target centered in the frame.
 
